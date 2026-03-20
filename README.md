@@ -1,4 +1,4 @@
-# companion-module-optisigns
+# companion-module-optisigns-digitalsignage
 
 Bitfocus Companion module for controlling [OptiSigns](https://www.optisigns.com) digital signage screens.
 
@@ -6,54 +6,53 @@ Bitfocus Companion module for controlling [OptiSigns](https://www.optisigns.com)
 
 - Assign playlists to screens
 - Assign individual assets/files to screens
-- Add or remove assets from playlists
-- Set per-asset duration within a playlist
-- Feedbacks for current screen content (playlist or asset)
-- Variables for current content type and name per screen
-
-## Setup
-
-1. Log in to [app.optisigns.com](https://app.optisigns.com)
-2. Go to **Settings → API Keys** and generate a new key with read/write permissions
-3. In Companion, add a new connection and search for **OptiSigns**
-4. Paste your API key into the configuration
-
-## Actions
-
-| Action | Description |
-|--------|-------------|
-| Assign Playlist to Screen | Switch a screen to display a playlist |
-| Assign Asset/File to Screen | Switch a screen to display a single asset |
-| Add Asset to Playlist | Insert an asset into a playlist at a specified position |
-| Remove Asset from Playlist | Remove an asset from a playlist by name |
-| Set Asset Duration in Playlist | Change how long an asset displays within a playlist |
-
-## Feedbacks
-
-| Feedback | Description |
-|----------|-------------|
-| Screen is Showing Playlist | Active when a screen is displaying a specific playlist |
-| Screen is Showing Asset/File | Active when a screen is displaying a specific asset |
-
-## Variables
-
-| Variable | Description |
-|----------|-------------|
-| `$(optisigns:device_count)` | Number of paired screens |
-| `$(optisigns:playlist_count)` | Number of playlists |
-| `$(optisigns:asset_count)` | Number of assets |
-| `$(optisigns:screen_<name>_content_type)` | Current content type for a screen |
-| `$(optisigns:screen_<name>_content_name)` | Current content name for a screen |
-
-Screen name keys are lower-cased with spaces and special characters replaced by underscores (e.g. "Lobby Display" → `lobby_display`).
+- Add assets to playlists
+- Remove assets from playlists
+- Set asset display duration within a playlist
+- Per-screen variables showing current content type and name
+- Feedbacks for triggering button states based on what a screen is currently displaying
 
 ## Configuration
 
 | Field | Description |
-|-------|-------------|
-| API Key | Your OptiSigns API key |
-| Poll Interval (seconds) | How often to refresh data from OptiSigns (0 = disabled, default 300) |
+|---|---|
+| API Key | Your OptiSigns API key. Found in the OptiSigns portal under **Settings → Integrations → API**. |
+| Poll Interval | How often (in seconds) to refresh screen, playlist, and asset data from OptiSigns. Set to 0 to disable polling. |
+
+## Actions
+
+| Action | Description |
+|---|---|
+| Assign Playlist to Screen | Sets a screen to display a specific playlist |
+| Assign Asset/File to Screen | Sets a screen to display a specific asset or file |
+| Add Asset to Playlist | Adds an asset to a playlist at a given position |
+| Remove Asset from Playlist | Removes the first occurrence of an asset from a playlist |
+| Set Asset Duration in Playlist | Sets how long (in seconds) an asset displays within a playlist |
+
+## Feedbacks
+
+| Feedback | Description |
+|---|---|
+| Screen is showing playlist | True when the selected screen is currently assigned to the selected playlist |
+| Screen is showing asset | True when the selected screen is currently assigned to the selected asset |
+
+## Variables
+
+For each screen, the following variables are available:
+
+| Variable | Description |
+|---|---|
+| `screen_N_name` | Display name of screen N |
+| `screen_N_content_type` | Current content type (`PLAYLIST`, `ASSET`, or `NONE`) |
+| `screen_N_content_name` | Name of the currently assigned playlist or asset |
+
+Screens are numbered 1–N, sorted alphabetically by name.
+
+## Requirements
+
+- Bitfocus Companion 4.x
+- An active OptiSigns account with API access
 
 ## License
 
-MIT
+MIT — Copyright (c) 2026 Eric Davidson
