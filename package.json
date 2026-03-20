@@ -1,6 +1,6 @@
 {
 	"name": "companion-module-optisigns-digitalsignage",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Bitfocus Companion module for OptiSigns digital signage",
 	"main": "src/main.js",
 	"scripts": {
