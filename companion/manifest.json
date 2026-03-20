@@ -1,13 +1,13 @@
 {
 	"$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
-	"id": "optisigns",
+	"id": "optisigns-digitalsignage",
 	"name": "OptiSigns",
 	"shortname": "OptiSigns",
 	"description": "Control OptiSigns digital signage screens — assign playlists and assets to screens",
 	"version": "1.0.0",
 	"license": "MIT",
-	"repository": "https://github.com/echalupka/companion-module-optisigns",
-	"bugs": "https://github.com/echalupka/companion-module-optisigns/issues",
+	"repository": "https://github.com/echalupka/companion-module-optisigns-digitalsignage",
+	"bugs": "https://github.com/echalupka/companion-module-optisigns-digitalsignage/issues",
 	"maintainers": [
 		{
 			"name": "Eric Davidson",
