@@ -10,7 +10,8 @@
 	"bugs": "https://github.com/echalupka/companion-module-optisigns/issues",
 	"maintainers": [
 		{
-			"name": "Loos CFA"
+			"name": "Eric Davidson",
+			"github": "echalupka"
 		}
 	],
 	"legacyIds": [],
