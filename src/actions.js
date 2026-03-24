@@ -52,13 +52,7 @@ module.exports = function updateActions(self) {
 					const device = data?.updateDevice
 					if (device) {
 						self.log('info', `Assigned playlist to "${device.deviceName}"`)
-						const d = self.devices.find((x) => x._id === device_id)
-						if (d) {
-							d.currentType = 'PLAYLIST'
-							d.currentPlaylistId = playlist_id
-						}
-						self.updateVariables()
-						self.checkFeedbacks()
+						await self.refreshData()
 					}
 				} catch (err) {
 					self.log('error', `Assign Playlist failed: ${err.message}`)
@@ -102,13 +96,7 @@ module.exports = function updateActions(self) {
 					const device = data?.updateDevice
 					if (device) {
 						self.log('info', `Assigned asset to "${device.deviceName}"`)
-						const d = self.devices.find((x) => x._id === device_id)
-						if (d) {
-							d.currentType = 'ASSET'
-							d.currentAssetId = asset_id
-						}
-						self.updateVariables()
-						self.checkFeedbacks()
+						await self.refreshData()
 					}
 				} catch (err) {
 					self.log('error', `Assign Asset failed: ${err.message}`)
