@@ -4,7 +4,7 @@
 	"name": "OptiSigns",
 	"shortname": "OptiSigns",
 	"description": "Control OptiSigns digital signage screens — assign playlists and assets to screens",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"license": "MIT",
 	"repository": "https://github.com/bitfocus/companion-module-optisigns-digitalsignage",
 	"bugs": "https://github.com/bitfocus/companion-module-optisigns-digitalsignage/issues",
