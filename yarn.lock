@@ -556,6 +556,7 @@ __metadata:
   dependencies:
     "@companion-module/base": "npm:~1.14.1"
     "@companion-module/tools": "npm:^2.6.1"
+    prettier: "npm:*"
   languageName: unknown
   linkType: soft
 
