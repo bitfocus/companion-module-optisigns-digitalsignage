@@ -1,28 +1,28 @@
 {
 	"name": "companion-module-optisigns-digitalsignage",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "Bitfocus Companion module for OptiSigns digital signage",
 	"main": "src/main.js",
 	"scripts": {
-		"build": "companion-module-build",
-		"dev": "companion-module-build --watch"
+		"package": "companion-module-build",
+		"format": "prettier -w ."
 	},
 	"packageManager": "yarn@4.9.1",
 	"engines": {
 		"node": "^22.20",
 		"yarn": "^4"
 	},
-	"keywords": [
-		"bitfocus",
-		"companion",
-		"optisigns",
-		"digital-signage"
-	],
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bitfocus/companion-module-optisigns-digitalsignage.git"
+	},
+	"prettier": "@companion-module/tools/.prettierrc.json",
 	"dependencies": {
 		"@companion-module/base": "~1.14.1"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^2.6.1"
+		"@companion-module/tools": "^2.6.1",
+		"prettier": "*"
 	}
 }

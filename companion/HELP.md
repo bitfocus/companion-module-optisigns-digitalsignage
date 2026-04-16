@@ -15,7 +15,7 @@ Control your OptiSigns digital signage screens from Companion.
 | **Assign Playlist to Screen** | Immediately switches a screen to display the selected playlist |
 | **Assign Asset/File to Screen** | Immediately switches a screen to display a single asset (image, video, URL, etc.) |
 
-Screens, playlists, and assets are loaded automatically from your OptiSigns account and refresh every 30 seconds. You can also type an ID directly into any dropdown if you prefer.
+Screens, playlists, and assets are loaded automatically from your OptiSigns account and refresh every 5 minutes (configurable). You can also type an ID directly into any dropdown if you prefer.
 
 ## Feedbacks
 
@@ -40,5 +40,5 @@ Screen name keys are lower-cased with spaces and special characters replaced by 
 
 ## Notes
 
-- Data is polled from OptiSigns every **30 seconds**. Feedback and variable states update automatically.
+- Data is polled from OptiSigns every **5 minutes** by default (configurable in module settings). Feedback and variable states update automatically.
 - After an action fires, the local state updates immediately without waiting for the next poll.

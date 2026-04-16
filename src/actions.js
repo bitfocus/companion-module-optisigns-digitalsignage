@@ -55,7 +55,7 @@ module.exports = function updateActions(self) {
 						await self.refreshData()
 					}
 				} catch (err) {
-					self.log('error', `Assign Playlist failed: ${err.message}`)
+					self.log('error', `Assign Playlist failed: ${err?.message ?? String(err)}`)
 				}
 			},
 		},
@@ -99,7 +99,7 @@ module.exports = function updateActions(self) {
 						await self.refreshData()
 					}
 				} catch (err) {
-					self.log('error', `Assign Asset failed: ${err.message}`)
+					self.log('error', `Assign Asset failed: ${err?.message ?? String(err)}`)
 				}
 			},
 		},
@@ -114,6 +114,7 @@ module.exports = function updateActions(self) {
 					choices: playlistChoices,
 					default: playlistChoices[0]?.id ?? '',
 					allowCustom: true,
+					tooltip: 'Select the playlist to add the asset to',
 				},
 				{
 					id: 'asset_id',
@@ -122,6 +123,7 @@ module.exports = function updateActions(self) {
 					choices: assetChoices,
 					default: assetChoices[0]?.id ?? '',
 					allowCustom: true,
+					tooltip: 'Select the asset or file to add',
 				},
 				{
 					id: 'position',
@@ -149,7 +151,7 @@ module.exports = function updateActions(self) {
 					const assetName = self.assets.find((a) => a._id === asset_id)?.filename ?? asset_id
 					self.log('info', `Added "${assetName}" to playlist "${playlistName}"`)
 				} catch (err) {
-					self.log('error', `Add Asset to Playlist failed: ${err.message}`)
+					self.log('error', `Add Asset to Playlist failed: ${err?.message ?? String(err)}`)
 				}
 			},
 		},
@@ -164,6 +166,7 @@ module.exports = function updateActions(self) {
 					choices: playlistChoices,
 					default: playlistChoices[0]?.id ?? '',
 					allowCustom: true,
+					tooltip: 'Select the playlist to remove the asset from',
 				},
 				{
 					id: 'asset_id',
@@ -191,7 +194,7 @@ module.exports = function updateActions(self) {
 					const assetName = self.assets.find((a) => a._id === asset_id)?.filename ?? asset_id
 					self.log('info', `Removed "${assetName}" from playlist "${playlistName}"`)
 				} catch (err) {
-					self.log('error', `Remove Asset from Playlist failed: ${err.message}`)
+					self.log('error', `Remove Asset from Playlist failed: ${err?.message ?? String(err)}`)
 				}
 			},
 		},
@@ -206,6 +209,7 @@ module.exports = function updateActions(self) {
 					choices: playlistChoices,
 					default: playlistChoices[0]?.id ?? '',
 					allowCustom: true,
+					tooltip: 'Select the playlist containing the asset',
 				},
 				{
 					id: 'asset_id',
@@ -223,6 +227,7 @@ module.exports = function updateActions(self) {
 					default: 10,
 					min: 1,
 					max: 3600,
+					tooltip: 'How long the asset should display in the playlist (in seconds)',
 				},
 			],
 			callback: async (event) => {
@@ -242,7 +247,7 @@ module.exports = function updateActions(self) {
 					const assetName = self.assets.find((a) => a._id === asset_id)?.filename ?? asset_id
 					self.log('info', `Set "${assetName}" duration to ${duration}s in playlist "${playlistName}"`)
 				} catch (err) {
-					self.log('error', `Set Asset Duration failed: ${err.message}`)
+					self.log('error', `Set Asset Duration failed: ${err?.message ?? String(err)}`)
 				}
 			},
 		},

@@ -10,6 +10,7 @@ async function graphqlRequest(apiKey, query, variables = {}) {
 			Authorization: `Bearer ${apiKey}`,
 		},
 		body: JSON.stringify({ query, variables }),
+		signal: AbortSignal.timeout(30_000),
 	})
 
 	if (!response.ok) {

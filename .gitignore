@@ -1,6 +1,6 @@
 node_modules/
-pkg/
-*.tgz
 package-lock.json
-.yarn/cache
-.yarn/install-state.gz
+/pkg
+/*.tgz
+DEBUG-*
+/.yarn

@@ -1,12 +1,12 @@
 {
 	"$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
 	"id": "optisigns-digitalsignage",
-	"name": "OptiSigns",
+	"name": "optisigns-digitalsignage",
 	"shortname": "OptiSigns",
 	"description": "Control OptiSigns digital signage screens — assign playlists and assets to screens",
-	"version": "1.0.4",
+	"version": "0.0.0",
 	"license": "MIT",
-	"repository": "https://github.com/bitfocus/companion-module-optisigns-digitalsignage",
+	"repository": "git+https://github.com/bitfocus/companion-module-optisigns-digitalsignage.git",
 	"bugs": "https://github.com/bitfocus/companion-module-optisigns-digitalsignage/issues",
 	"maintainers": [
 		{
@@ -23,5 +23,5 @@
 	},
 	"manufacturer": "OptiSigns",
 	"products": ["Digital Signage"],
-	"keywords": ["digital signage", "optisigns", "screens", "displays"]
+	"keywords": ["digital signage", "screens", "displays"]
 }

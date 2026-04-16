@@ -31,6 +31,12 @@ class OptiSignsInstance extends InstanceBase {
 			return
 		}
 
+		// Register empty definitions so actions/feedbacks/variables are visible
+		// even if the initial API call fails
+		this.updateActions()
+		this.updateFeedbacks()
+		this.updateVariableDefinitions()
+
 		await this.refreshData()
 		this._startPolling()
 	}
@@ -57,7 +63,7 @@ class OptiSignsInstance extends InstanceBase {
 		return [
 			{
 				id: 'api_key',
-				type: 'textinput',
+				type: 'secret-text',
 				label: 'API Key',
 				tooltip: 'Generate at app.optisigns.com → Settings → API Keys',
 				width: 12,
@@ -78,26 +84,44 @@ class OptiSignsInstance extends InstanceBase {
 	// ─── Data Refresh ─────────────────────────────────────────────────────────
 
 	async refreshData() {
-		let newDevices, newPlaylists, newAssets
+		const [devicesResult, playlistsResult, assetsResult] = await Promise.allSettled([
+			graphqlRequest(this.config.api_key, GET_DEVICES),
+			graphqlRequest(this.config.api_key, GET_PLAYLISTS),
+			graphqlRequest(this.config.api_key, GET_ASSETS),
+		])
 
-		try {
-			const [devicesData, playlistsData, assetsData] = await Promise.all([
-				graphqlRequest(this.config.api_key, GET_DEVICES),
-				graphqlRequest(this.config.api_key, GET_PLAYLISTS),
-				graphqlRequest(this.config.api_key, GET_ASSETS),
-			])
-
-			newDevices = extractEdges(devicesData?.devices)
-			newPlaylists = extractEdges(playlistsData?.playlists)
-			newAssets = extractEdges(assetsData?.assets)
-
-			this.log('debug', `Loaded ${newDevices.length} screens, ${newPlaylists.length} playlists, ${newAssets.length} assets`)
-			this.updateStatus(InstanceStatus.Ok)
-		} catch (err) {
-			this.log('error', `Failed to fetch data from OptiSigns: ${err.message}`)
-			this.updateStatus(InstanceStatus.ConnectionFailure, err.message)
+		const allFailed = [devicesResult, playlistsResult, assetsResult].every((r) => r.status === 'rejected')
+		if (allFailed) {
+			const err = devicesResult.reason
+			this.log('error', `Failed to fetch data from OptiSigns: ${err?.message ?? String(err)}`)
+			this.updateStatus(InstanceStatus.ConnectionFailure, err?.message ?? String(err))
 			return
 		}
+
+		let newDevices = this.devices
+		let newPlaylists = this.playlists
+		let newAssets = this.assets
+
+		if (devicesResult.status === 'fulfilled') {
+			newDevices = extractEdges(devicesResult.value?.devices)
+		} else {
+			this.log('error', `Failed to fetch devices: ${devicesResult.reason?.message ?? String(devicesResult.reason)}`)
+		}
+
+		if (playlistsResult.status === 'fulfilled') {
+			newPlaylists = extractEdges(playlistsResult.value?.playlists)
+		} else {
+			this.log('error', `Failed to fetch playlists: ${playlistsResult.reason?.message ?? String(playlistsResult.reason)}`)
+		}
+
+		if (assetsResult.status === 'fulfilled') {
+			newAssets = extractEdges(assetsResult.value?.assets)
+		} else {
+			this.log('error', `Failed to fetch assets: ${assetsResult.reason?.message ?? String(assetsResult.reason)}`)
+		}
+
+		this.log('debug', `Loaded ${newDevices.length} screens, ${newPlaylists.length} playlists, ${newAssets.length} assets`)
+		this.updateStatus(InstanceStatus.Ok)
 
 		// Only rebuild action/feedback definitions if the lists changed —
 		// rebuilding wipes existing feedback instances from buttons.
@@ -146,7 +170,7 @@ class OptiSignsInstance extends InstanceBase {
 		const intervalMs = (this.config.poll_interval ?? 300) * 1000
 		if (intervalMs === 0) return
 		this._pollTimer = setInterval(() => {
-			this.refreshData().catch((err) => this.log('error', `Poll error: ${err.message}`))
+			this.refreshData()
 		}, intervalMs)
 	}
 
@@ -158,10 +182,13 @@ class OptiSignsInstance extends InstanceBase {
 	}
 }
 
-// Returns a string that changes only when the set of IDs/names in a list changes.
+// Returns a string that changes when the set of IDs or display names in a list changes.
 // Used to avoid rebuilding action/feedback definitions on every poll.
 function _listSignature(list) {
-	return list.map((item) => item._id).sort().join(',')
+	return list
+		.map((item) => `${item._id}:${item.deviceName ?? item.name ?? item.filename}`)
+		.sort()
+		.join(',')
 }
 
 runEntrypoint(OptiSignsInstance, UpgradeScripts)

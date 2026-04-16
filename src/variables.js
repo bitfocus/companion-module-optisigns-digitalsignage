@@ -7,9 +7,9 @@ module.exports = function updateVariableDefinitions(self) {
 		{ variableId: 'asset_count', name: 'Number of Assets' },
 	]
 
-	// One set of variables per screen, keyed by sanitized device name
+	// One set of variables per screen, keyed by sanitized device name + ID suffix
 	for (const device of self.devices) {
-		const key = sanitizeKey(device.deviceName)
+		const key = sanitizeKey(device.deviceName, device._id)
 		definitions.push(
 			{ variableId: `screen_${key}_content_type`, name: `${device.deviceName}: Current Content Type` },
 			{ variableId: `screen_${key}_content_name`, name: `${device.deviceName}: Current Content Name` },
@@ -28,7 +28,7 @@ function updateVariableValues(self) {
 	}
 
 	for (const device of self.devices) {
-		const key = sanitizeKey(device.deviceName)
+		const key = sanitizeKey(device.deviceName, device._id)
 
 		let contentType = device.currentType ?? 'NONE'
 		let contentName = ''
@@ -48,9 +48,12 @@ function updateVariableValues(self) {
 	self.setVariableValues(values)
 }
 
-// Replace characters that aren't valid in variable IDs with underscores
-function sanitizeKey(name) {
-	return name.toLowerCase().replace(/[^a-z0-9_]/g, '_')
+// Replace characters that aren't valid in variable IDs with underscores.
+// Appends the last 6 characters of the device ID to prevent collisions between
+// devices whose names sanitize to the same string (e.g. "Screen A" and "Screen_A").
+function sanitizeKey(name, id) {
+	const namePart = name.toLowerCase().replace(/[^a-z0-9_]/g, '_')
+	return `${namePart}_${id.slice(-6)}`
 }
 
 module.exports.updateVariableValues = updateVariableValues
