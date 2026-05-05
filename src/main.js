@@ -18,15 +18,17 @@ class OptiSignsInstance extends InstanceBase {
 		this.assets = []
 
 		this._pollTimer = null
+		this.secrets = {}
 	}
 
 	// ─── Lifecycle ────────────────────────────────────────────────────────────
 
-	async init(config) {
+	async init(config, isFirstInit, secrets) {
 		this.config = config
+		this.secrets = secrets ?? {}
 		this.updateStatus(InstanceStatus.Connecting)
 
-		if (!this.config.api_key) {
+		if (!this.secrets.api_key) {
 			this.updateStatus(InstanceStatus.BadConfig, 'API key is required')
 			return
 		}
@@ -45,11 +47,12 @@ class OptiSignsInstance extends InstanceBase {
 		this._stopPolling()
 	}
 
-	async configUpdated(config) {
+	async configUpdated(config, secrets) {
 		this._stopPolling()
 		this.config = config
+		this.secrets = secrets ?? {}
 
-		if (!this.config.api_key) {
+		if (!this.secrets.api_key) {
 			this.updateStatus(InstanceStatus.BadConfig, 'API key is required')
 			return
 		}
@@ -85,9 +88,9 @@ class OptiSignsInstance extends InstanceBase {
 
 	async refreshData() {
 		const [devicesResult, playlistsResult, assetsResult] = await Promise.allSettled([
-			graphqlRequest(this.config.api_key, GET_DEVICES),
-			graphqlRequest(this.config.api_key, GET_PLAYLISTS),
-			graphqlRequest(this.config.api_key, GET_ASSETS),
+			graphqlRequest(this.secrets.api_key, GET_DEVICES),
+			graphqlRequest(this.secrets.api_key, GET_PLAYLISTS),
+			graphqlRequest(this.secrets.api_key, GET_ASSETS),
 		])
 
 		const allFailed = [devicesResult, playlistsResult, assetsResult].every((r) => r.status === 'rejected')

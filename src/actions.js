@@ -45,7 +45,7 @@ module.exports = function updateActions(self) {
 					return
 				}
 				try {
-					const data = await graphqlRequest(self.config.api_key, ASSIGN_PLAYLIST, {
+					const data = await graphqlRequest(self.secrets.api_key, ASSIGN_PLAYLIST, {
 						_id: device_id,
 						playlistId: playlist_id,
 					})
@@ -89,7 +89,7 @@ module.exports = function updateActions(self) {
 					return
 				}
 				try {
-					const data = await graphqlRequest(self.config.api_key, ASSIGN_ASSET, {
+					const data = await graphqlRequest(self.secrets.api_key, ASSIGN_ASSET, {
 						_id: device_id,
 						assetId: asset_id,
 					})
@@ -142,7 +142,7 @@ module.exports = function updateActions(self) {
 					return
 				}
 				try {
-					await graphqlRequest(self.config.api_key, ADD_PLAYLIST_ITEMS, {
+					await graphqlRequest(self.secrets.api_key, ADD_PLAYLIST_ITEMS, {
 						playlistId: playlist_id,
 						assetIds: [asset_id],
 						pos: position,
@@ -185,8 +185,8 @@ module.exports = function updateActions(self) {
 					return
 				}
 				try {
-					const pos = await findAssetPosition(self.config.api_key, playlist_id, asset_id)
-					await graphqlRequest(self.config.api_key, REMOVE_PLAYLIST_ITEMS, {
+					const pos = await findAssetPosition(self.secrets.api_key, playlist_id, asset_id)
+					await graphqlRequest(self.secrets.api_key, REMOVE_PLAYLIST_ITEMS, {
 						playlistId: playlist_id,
 						pos: [pos],
 					})
@@ -237,8 +237,8 @@ module.exports = function updateActions(self) {
 					return
 				}
 				try {
-					const pos = await findAssetPosition(self.config.api_key, playlist_id, asset_id)
-					await graphqlRequest(self.config.api_key, UPDATE_PLAYLIST_ITEM_DURATION, {
+					const pos = await findAssetPosition(self.secrets.api_key, playlist_id, asset_id)
+					await graphqlRequest(self.secrets.api_key, UPDATE_PLAYLIST_ITEM_DURATION, {
 						playlistId: playlist_id,
 						pos: [pos],
 						duration: duration,
